@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Layouts</title>
+</head>
+<body>
+<table id="layoutTable">
+    <thead>
+    <tr>
+        <th>ChannelTitle</th>
+        <th>VideoId</th>
+        <th>PublishedAt</th>
+        <th>YoutubeVideoId</th>
+        <th>Timestamp</th>
+        <th>ImgPart</th>
+        <th>LayoutUrl</th>
+        <th>LayoutImgUrl</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<div id="pagination">
+</div>
+
+<script>
+    function fetchPage(page) {
+        fetch(`api/v1/layouts?page=${page}`)
+            .then(response => response.json())
+            .then(data => {
+                const {currentPage, pageSize, totalPages, totalElements, layouts} = data;
+
+                const tableBody = document.querySelector('#layoutTable tbody');
+                tableBody.innerHTML = '';
+                layouts.forEach(item => {
+                    const row = document.createElement('tr');
+                    const d = new Date(item?.youtubeVideo?.publishedAt).toLocaleString();
+                    row.innerHTML = `
+                    <td>${item.youtubeVideo.youtubeChannel.channelTitle}</td>
+                    <td>${item.youtubeVideo.videoId}</td>
+                    <td>${d}</td>
+                    <td>${item.youtubeVideo.videoId}</td>
+                    <td>${item.timestamp}</td>
+                    <td>${item.imgPart}</td>
+                    <td><a href="${item.layoutUrl}" >${item.layoutUrl}</a></td>
+                    <td><img src="${item.layoutImgUrl}" alt="Layout Image" width="150px" height="auto"></td>
+                `;
+                    tableBody.appendChild(row);
+                });
+
+                const pagination = document.querySelector('#pagination');
+                pagination.innerHTML = '';
+                for (let i = 0; i < totalPages; i++) {
+                    const link = document.createElement('a');
+                    link.href = '#';
+                    link.textContent = i + 1;
+                    link.dataset.page = i;
+                    link.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        fetchPage(i);
+                    });
+                    pagination.appendChild(link);
+                }
+            });
+    }
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+        fetchPage(0);
+    });
+</script>
+</body>
+</html>

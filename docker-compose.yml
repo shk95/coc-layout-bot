@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  coc-layout-bot:
+    image: registry.hub.docker.com/user34535432/coc-layout-bot:latest
+    ports:
+      - "8081:8080"
+    volumes:
+      - coc-layout-bot-log:/var/log/coc-layout-bot
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - YT_MEDIA_EXTRACTOR_API_HOST=yt-media-extractor-api
+      - YT_MEDIA_EXTRACTOR_API_PORT
+      - DB_DRIVER
+      - DB_URL
+      - DB_USERNAME
+      - DB_PASSWORD
+      - DISCORD_TOKEN
+      - YOUTUBE_API_KEY
+    depends_on:
+      - yt-media-extractor-api
+    networks:
+      - my-network
+
+  yt-media-extractor-api:
+    image: registry.hub.docker.com/user34535432/yt-media-extractor-api:latest
+    ports:
+      - "${YT_MEDIA_EXTRACTOR_API_PORT}:8080"
+    volumes:
+      - coc-layout-bot-log:/var/log/yt-media-extractor-api
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - CLOUDINARY_ENVIRONMENT_VARIABLE
+      - CLOUDINARY_API_KEY
+      - CLOUDINARY_API_SECRET
+      - CLOUDINARY_CLOUD_NAME
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
+
+volumes:
+  coc-layout-bot-log:

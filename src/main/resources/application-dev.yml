@@ -1,0 +1,29 @@
+spring:
+  config:
+    import:
+      - "application.yml"
+      - "application-secret.yml"
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    show-sql: true
+
+  sql:
+    init:
+      mode: never
+
+logging:
+  level:
+    io.github.shk95.coclayoutbot.*: DEBUG
+
+  config: classpath:logback-spring-dev.xml
+
+server:
+  port: 51001
+
+app:
+  external-api:
+    yt-media-extractor-api:
+      url: "http://localhost:51002/api/v1"
