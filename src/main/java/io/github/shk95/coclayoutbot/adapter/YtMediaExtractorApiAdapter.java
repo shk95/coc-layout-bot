@@ -72,7 +72,7 @@ public class YtMediaExtractorApiAdapter implements YtMediaExtractorApi {
 				throw new YtMediaExtractorException("Image Extractor API failed to process the response. code : [" + code + "] description : [" + errorMsg + "]");
 			}
 			imgUrl = item.path("result").path("imgLink").asText();
-			log.info("Image Extractor Api | videoId : [{} | result : [{}]", videoId, imgUrl);
+			log.info("Use Image Extractor Api | videoId : [{}] | result : [{}]", videoId, imgUrl);
 		} catch (Exception e) {
 			log.error("Error occurred while processing YouTube API response: {}", e.getMessage());
 			throw new YtMediaExtractorException();

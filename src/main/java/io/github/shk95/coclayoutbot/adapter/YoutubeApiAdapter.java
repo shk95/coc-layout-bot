@@ -113,7 +113,7 @@ public class YoutubeApiAdapter implements YoutubeApi {
 							.title(title)
 							.publishedAt(publishedAt)
 							.build();
-					log.info("YouTube API | Search:list | result : [{}]", videoSearchResult);
+					log.info("Use YouTube API | Search:list | result : [{}]", videoSearchResult);
 					result.add(videoSearchResult);
 				}
 			});
