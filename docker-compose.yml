@@ -2,7 +2,10 @@ version: '3.8'
 
 services:
   coc-layout-bot:
-    image: registry.hub.docker.com/user34535432/coc-layout-bot:latest
+    image: coc-layout-bot:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8081:8080"
     volumes:
