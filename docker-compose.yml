@@ -11,6 +11,7 @@ services:
     volumes:
       - coc-layout-bot-log:/var/log/coc-layout-bot
     environment:
+      - TZ=${TZ:-Asia/Seoul}  # Default to Asia/Seoul
       - SPRING_PROFILES_ACTIVE=prod
       - YT_MEDIA_EXTRACTOR_API_HOST=yt-media-extractor-api
       - YT_MEDIA_EXTRACTOR_API_PORT
@@ -32,6 +33,7 @@ services:
     volumes:
       - coc-layout-bot-log:/var/log/yt-media-extractor-api
     environment:
+      - TZ=${TZ:-Asia/Seoul}  # Default to Asia/Seoul
       - SPRING_PROFILES_ACTIVE=prod
       - CLOUDINARY_ENVIRONMENT_VARIABLE
       - CLOUDINARY_API_KEY
