@@ -12,4 +12,8 @@ public interface SubscribedChannelRepository extends
 
 	Optional<SubscribedChannelEntity> findBySubscriber_ChannelIdAndYoutubeChannel_ChannelId(Long subscriberId, String channelId);
 
+	boolean existsBySubscribedChannelId_SubscriberChannelId(Long subscriberChannelId);
+
+	void deleteAllBySubscriber_ChannelId(Long subscriberChannelId);
+
 }

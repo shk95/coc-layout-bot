@@ -94,4 +94,12 @@ public class SubscriberActionImpl implements SubscriberAction {
 		return true;
 	}
 
+	// TODO: 예상치못한 예외에대한 처리 필요.
+	@Transactional
+	@Override
+	public void unsubscribeAll(Subscriber subscriber) {
+		subscribedChannelRepository.deleteAllBySubscriber_ChannelId(subscriber.channelId());
+		subscriberDiscordChannelRepository.deleteById(subscriber.channelId());
+	}
+
 }

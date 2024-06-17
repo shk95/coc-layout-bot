@@ -10,4 +10,6 @@ public interface SubscriberAction {
 
 	boolean unsubscribe(Subscriber subscriber, YoutubeChannel youtubeChannel);
 
+	void unsubscribeAll(Subscriber subscriber);
+
 }
