@@ -26,7 +26,7 @@ public class SubscribedChannelEntity {
 	private SubscriberDiscordChannelEntity subscriber;
 	@MapsId("youtubeChannelId")
 	@ManyToOne(optional = false)
-	@JoinColumn(referencedColumnName = "channel_id", name = "channel_id", updatable = false)
+	@JoinColumn(referencedColumnName = "channel_id", name = "youtube_channel_id", updatable = false)
 	private YoutubeChannelEntity youtubeChannel;
 	@Convert(converter = BooleanConverter.class)
 	@Column(name = "setup", columnDefinition = "NUMBER(1) DEFAULT 0", length = 1)
