@@ -32,10 +32,12 @@ dependencies {
 	implementation('net.dv8tion:JDA:5.0.0-beta.23') {
 		/* without audio */
 		exclude group: 'club.minnced', module: 'opus-java'
+		exclude group: 'org.apache.commons', module: 'commons-collections4'
 	}
 	implementation 'org.springframework.boot:spring-boot-starter-validation:3.1.4'
-	implementation 'com.oracle.database.jdbc:ojdbc10:19.23.0.0'
-	testImplementation 'com.h2database:h2'
+	runtimeOnly 'com.oracle.database.jdbc:ojdbc10:19.23.0.0'
+	testRuntimeOnly 'com.h2database:h2'
+	implementation 'org.apache.commons:commons-collections4:4.4'
 
 }
 
