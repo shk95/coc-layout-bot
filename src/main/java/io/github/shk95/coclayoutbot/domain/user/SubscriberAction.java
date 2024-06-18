@@ -1,5 +1,6 @@
-package io.github.shk95.coclayoutbot.domain;
+package io.github.shk95.coclayoutbot.domain.user;
 
+import io.github.shk95.coclayoutbot.domain.layout.YoutubeChannel;
 import io.github.shk95.coclayoutbot.repository.jpa.entity.SubscriberDiscordChannelEntity;
 
 public interface SubscriberAction {

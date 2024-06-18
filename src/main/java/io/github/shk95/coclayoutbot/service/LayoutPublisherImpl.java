@@ -1,10 +1,10 @@
 package io.github.shk95.coclayoutbot.service;
 
 import io.github.shk95.coclayoutbot.discord.DiscordSupport;
-import io.github.shk95.coclayoutbot.domain.Layout;
 import io.github.shk95.coclayoutbot.domain.LayoutPublisher;
-import io.github.shk95.coclayoutbot.domain.Subscriber;
-import io.github.shk95.coclayoutbot.domain.YoutubeChannel;
+import io.github.shk95.coclayoutbot.domain.layout.Layout;
+import io.github.shk95.coclayoutbot.domain.layout.YoutubeChannel;
+import io.github.shk95.coclayoutbot.domain.user.Subscriber;
 import io.github.shk95.coclayoutbot.repository.jpa.entity.LayoutEntity;
 import io.github.shk95.coclayoutbot.repository.jpa.entity.LayoutRepository;
 import io.github.shk95.coclayoutbot.repository.jpa.entity.SubscribedChannelEntity;

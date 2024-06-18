@@ -1,6 +1,6 @@
 package io.github.shk95.coclayoutbot.repository.jpa.entity;
 
-import io.github.shk95.coclayoutbot.domain.YoutubeVideo;
+import io.github.shk95.coclayoutbot.domain.layout.YoutubeVideo;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

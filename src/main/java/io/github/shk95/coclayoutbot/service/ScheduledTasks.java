@@ -1,7 +1,7 @@
 package io.github.shk95.coclayoutbot.service;
 
-import io.github.shk95.coclayoutbot.domain.LayoutCollector;
 import io.github.shk95.coclayoutbot.domain.LayoutPublisher;
+import io.github.shk95.coclayoutbot.domain.layout.LayoutCollector;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

@@ -1,7 +1,7 @@
 package io.github.shk95.coclayoutbot.service;
 
 import io.github.shk95.coclayoutbot.adapter.YtMediaExtractorApiAdapter;
-import io.github.shk95.coclayoutbot.domain.LayoutCollector;
+import io.github.shk95.coclayoutbot.domain.layout.LayoutCollector;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package io.github.shk95.coclayoutbot.domain;
+package io.github.shk95.coclayoutbot.domain.user;
 
 import java.time.Instant;
 

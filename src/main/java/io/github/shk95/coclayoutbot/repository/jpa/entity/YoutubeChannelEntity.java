@@ -1,7 +1,7 @@
 package io.github.shk95.coclayoutbot.repository.jpa.entity;
 
-import io.github.shk95.coclayoutbot.domain.VideoSplitStrategy;
-import io.github.shk95.coclayoutbot.domain.YoutubeChannel;
+import io.github.shk95.coclayoutbot.domain.layout.VideoSplitStrategy;
+import io.github.shk95.coclayoutbot.domain.layout.YoutubeChannel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

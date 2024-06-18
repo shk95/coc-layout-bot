@@ -1,9 +1,9 @@
 package io.github.shk95.coclayoutbot.discord.jda.command;
 
 import io.github.shk95.coclayoutbot.discord.jda.SlashCommand;
-import io.github.shk95.coclayoutbot.domain.Subscriber;
-import io.github.shk95.coclayoutbot.domain.SubscriberAction;
-import io.github.shk95.coclayoutbot.domain.YoutubeChannel;
+import io.github.shk95.coclayoutbot.domain.layout.YoutubeChannel;
+import io.github.shk95.coclayoutbot.domain.user.Subscriber;
+import io.github.shk95.coclayoutbot.domain.user.SubscriberAction;
 import io.github.shk95.coclayoutbot.repository.jpa.entity.YoutubeChannelEntity;
 import io.github.shk95.coclayoutbot.repository.jpa.entity.YoutubeChannelRepository;
 import lombok.RequiredArgsConstructor;

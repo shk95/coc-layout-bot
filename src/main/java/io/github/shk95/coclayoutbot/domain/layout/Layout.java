@@ -1,4 +1,4 @@
-package io.github.shk95.coclayoutbot.domain;
+package io.github.shk95.coclayoutbot.domain.layout;
 
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;

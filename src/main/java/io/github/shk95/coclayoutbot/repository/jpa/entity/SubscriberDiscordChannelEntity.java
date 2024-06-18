@@ -1,6 +1,6 @@
 package io.github.shk95.coclayoutbot.repository.jpa.entity;
 
-import io.github.shk95.coclayoutbot.domain.Subscriber;
+import io.github.shk95.coclayoutbot.domain.user.Subscriber;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

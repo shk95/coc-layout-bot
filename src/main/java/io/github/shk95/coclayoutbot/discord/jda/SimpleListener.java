@@ -1,7 +1,7 @@
 package io.github.shk95.coclayoutbot.discord.jda;
 
-import io.github.shk95.coclayoutbot.domain.Subscriber;
-import io.github.shk95.coclayoutbot.domain.SubscriberAction;
+import io.github.shk95.coclayoutbot.domain.user.Subscriber;
+import io.github.shk95.coclayoutbot.domain.user.SubscriberAction;
 import io.github.shk95.coclayoutbot.repository.jpa.entity.SubscribedChannelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,9 +1,9 @@
 package io.github.shk95.coclayoutbot.service;
 
-import io.github.shk95.coclayoutbot.domain.Layout;
-import io.github.shk95.coclayoutbot.domain.LayoutCollector;
-import io.github.shk95.coclayoutbot.domain.YoutubeChannel;
-import io.github.shk95.coclayoutbot.domain.YoutubeVideo;
+import io.github.shk95.coclayoutbot.domain.layout.Layout;
+import io.github.shk95.coclayoutbot.domain.layout.LayoutCollector;
+import io.github.shk95.coclayoutbot.domain.layout.YoutubeChannel;
+import io.github.shk95.coclayoutbot.domain.layout.YoutubeVideo;
 import io.github.shk95.coclayoutbot.repository.jpa.entity.*;
 import io.github.shk95.coclayoutbot.util.ChainableRunnable;
 import lombok.RequiredArgsConstructor;
