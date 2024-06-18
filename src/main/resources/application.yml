@@ -23,8 +23,6 @@ spring:
 
 logging:
   config: classpath:logback-spring.xml
-  level:
-    io.github.shk95.coclayoutbot.*: INFO
 
 app:
   external-api:

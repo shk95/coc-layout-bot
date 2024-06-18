@@ -15,9 +15,6 @@ spring:
       mode: never
 
 logging:
-  level:
-    io.github.shk95.coclayoutbot.*: DEBUG
-
   config: classpath:logback-spring-dev.xml
 
 server:
