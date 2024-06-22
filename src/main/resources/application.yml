@@ -6,12 +6,6 @@ spring:
   application:
     name: coc-layout-bot
 
-  datasource:
-    driver-class-name: ${DB_DRIVER}
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-
   jpa:
     open-in-view: false
     hibernate:
@@ -23,12 +17,3 @@ spring:
 
 logging:
   config: classpath:logback-spring.xml
-
-app:
-  external-api:
-    yt-media-extractor-api:
-      url: "http://${YT_MEDIA_EXTRACTOR_API_HOST}:${YT_MEDIA_EXTRACTOR_API_PORT}/api/v1"
-
-  secret:
-    youtube-api-key: ${YOUTUBE_API_KEY}
-    discord-token: ${DISCORD_TOKEN}

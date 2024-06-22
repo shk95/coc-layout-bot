@@ -1,0 +1,18 @@
+spring:
+  config:
+    import: "application.yml"
+
+  datasource:
+    driver-class-name: ${DB_DRIVER}
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+app:
+  external-api:
+    yt-media-extractor-api:
+      url: "http://${YT_MEDIA_EXTRACTOR_API_HOST}:${YT_MEDIA_EXTRACTOR_API_PORT}/api/v1"
+
+  secret:
+    youtube-api-key: ${YOUTUBE_API_KEY}
+    discord-token: ${DISCORD_TOKEN}
