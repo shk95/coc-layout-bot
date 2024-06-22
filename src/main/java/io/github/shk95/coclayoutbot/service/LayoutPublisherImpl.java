@@ -1,10 +1,12 @@
 package io.github.shk95.coclayoutbot.service;
 
-import io.github.shk95.coclayoutbot.discord.DiscordSupport;
+import io.github.shk95.coclayoutbot.discord.domain.DiscordContext;
 import io.github.shk95.coclayoutbot.domain.LayoutPublisher;
 import io.github.shk95.coclayoutbot.domain.layout.Layout;
 import io.github.shk95.coclayoutbot.domain.layout.YoutubeChannel;
 import io.github.shk95.coclayoutbot.domain.user.Subscriber;
+import io.github.shk95.coclayoutbot.domain.user.message.MessageContent;
+import io.github.shk95.coclayoutbot.domain.user.message.MessageCreation;
 import io.github.shk95.coclayoutbot.repository.jpa.entity.LayoutEntity;
 import io.github.shk95.coclayoutbot.repository.jpa.entity.LayoutRepository;
 import io.github.shk95.coclayoutbot.repository.jpa.entity.SubscribedChannelEntity;
@@ -24,7 +26,7 @@ import java.util.List;
 @Service
 public class LayoutPublisherImpl implements LayoutPublisher {
 
-	private final DiscordSupport discordSupport;
+	private final DiscordContext discordContext;
 	private final SubscribedChannelRepository subscribedChannelRepository;
 	private final LayoutRepository layoutRepository;
 
@@ -33,8 +35,6 @@ public class LayoutPublisherImpl implements LayoutPublisher {
 		String publishedAt = layout.youtubeVideo().youtubeVideoInfoPart().publishedAt().toString();
 		String timestamp = layout.detail().timestamp().toString();
 		int part = layout.detail().imgPart();
-		String layoutImgUrl = layout.detail().layoutImgUrl();
-		String layoutUrl = layout.detail().layoutUrl();
 
 		// TODO: Implement a better way to publish the layout
 		return """
@@ -42,9 +42,7 @@ public class LayoutPublisherImpl implements LayoutPublisher {
 				Published Date : %s
 				Timestamp : %s
 				Layout Part : %s
-				%s
-				%s
-				""".formatted(channelTitle, publishedAt, timestamp, part, layoutImgUrl, layoutUrl);
+				""".formatted(channelTitle, publishedAt, timestamp, part);
 	}
 
 	@Transactional
@@ -72,14 +70,21 @@ public class LayoutPublisherImpl implements LayoutPublisher {
 							.sorted()
 							.toList();
 
-					log.debug(layoutsAfterLastFetchedAt.toString());
+					List<MessageContent.EmbedContent> embedContents = layoutsAfterLastFetchedAt
+							.stream()
+							.map(layout -> MessageContent.EmbedContent.builder()
+									.title("Click here to see the layout!")
+									.description(createMessage(layout))
+									.imageUrl(layout.detail().layoutImgUrl())
+									.url(layout.detail().layoutUrl())
+									.build())
+							.toList();
+					MessageCreation<MessageContent.EmbedContent> messageCreation = new MessageCreation<>(subscriber.channelId(), embedContents);
 
-					layoutsAfterLastFetchedAt
-							.forEach(layout -> {
-								String message = createMessage(layout);
-								discordSupport.getContext().message()
-										.send(subscriber.channelId(), message);
-							});
+					discordContext
+							.textChannel()
+							.embedMessage()
+							.send(messageCreation);
 
 					subscribedChannelEntity.touchLastFetchedAt(now);
 					subscribedChannelRepository.saveAndFlush(subscribedChannelEntity);
