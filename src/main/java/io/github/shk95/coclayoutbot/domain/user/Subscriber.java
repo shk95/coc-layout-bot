@@ -13,11 +13,8 @@ public record Subscriber(
 	@Override
 	public String toString() {
 		return """
-
-				Subscriber{
-				        channelId=%s
-				        guildId=%s,
-				}""".formatted(channelId, guildId);
+				Subscriber{ channelId = %s , guildId = %s }
+				""".formatted(channelId, guildId);
 	}
 
 }

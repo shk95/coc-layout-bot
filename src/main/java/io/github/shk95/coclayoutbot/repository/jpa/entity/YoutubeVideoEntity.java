@@ -6,8 +6,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.time.Instant;
+import java.util.Objects;
 
 @ToString(onlyExplicitlyIncluded = true)
 @Getter
@@ -26,8 +28,10 @@ public class YoutubeVideoEntity {
 	private boolean processed;
 	@Column(name = "title")
 	private String title;
+	@ToString.Include
 	@Column(name = "published_at", columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = false)
 	private Instant publishedAt;
+	@ToString.Include
 	@ManyToOne
 	@JoinColumn(referencedColumnName = "channel_id", name = "channel_id", updatable = false)
 	private YoutubeChannelEntity youtubeChannel;
@@ -53,6 +57,28 @@ public class YoutubeVideoEntity {
 
 	public void processed() {
 		this.processed = true;
+	}
+
+	@Override
+	public final boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null) return false;
+		Class<?> oEffectiveClass = o instanceof HibernateProxy
+				? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass()
+				: o.getClass();
+		Class<?> thisEffectiveClass = this instanceof HibernateProxy
+				? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
+				: this.getClass();
+		if (thisEffectiveClass != oEffectiveClass) return false;
+		YoutubeVideoEntity that = (YoutubeVideoEntity) o;
+		return getVideoId() != null && Objects.equals(getVideoId(), that.getVideoId());
+	}
+
+	@Override
+	public final int hashCode() {
+		return this instanceof HibernateProxy
+				? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode()
+				: getClass().hashCode();
 	}
 
 }

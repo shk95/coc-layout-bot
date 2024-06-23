@@ -17,6 +17,13 @@ public interface MessageContent {
 			this.textContent = textContent;
 		}
 
+		@Override
+		public String toString() {
+			return """
+					TextContent{ textContent = %s }
+					""".formatted(textContent);
+		}
+
 	}
 
 	@Getter
@@ -59,6 +66,13 @@ public interface MessageContent {
 			this.authorName = authorName;
 			this.authorUrl = authorUrl;
 			this.authorIconUrl = authorIconUrl;
+		}
+
+		@Override
+		public String toString() {
+			return """
+					EmbedContent{ title = %s , description = %s , url = %s , imageUrl = %s , color = %s }
+					""".formatted(title, description, url, imageUrl, color);
 		}
 
 	}

@@ -6,18 +6,22 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.proxy.HibernateProxy;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+@ToString(onlyExplicitlyIncluded = true)
 @Getter
 @NoArgsConstructor
 @Entity
 @Table(name = "subscribed_channel")
 public class SubscribedChannelEntity {
 
+	@ToString.Include
 	@EmbeddedId
 	private SubscribedChannelId subscribedChannelId;
 	@MapsId("subscriberChannelId")
@@ -28,9 +32,11 @@ public class SubscribedChannelEntity {
 	@ManyToOne(optional = false)
 	@JoinColumn(referencedColumnName = "channel_id", name = "youtube_channel_id", updatable = false)
 	private YoutubeChannelEntity youtubeChannel;
+	@ToString.Include
 	@Convert(converter = BooleanConverter.class)
 	@Column(name = "setup", columnDefinition = "NUMBER(1) DEFAULT 0", length = 1)
 	private boolean setup;
+	@ToString.Include
 	@Nullable
 	@Column(name = "last_fetched_at", columnDefinition = "TIMESTAMP WITH TIME ZONE")
 	private Instant lastFetchedAt; // 마지막으로 가져온 날짜
@@ -65,36 +71,33 @@ public class SubscribedChannelEntity {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		SubscribedChannelEntity that = (SubscribedChannelEntity) o;
-		return setup == that.setup && Objects.equals(subscribedChannelId, that.subscribedChannelId) && Objects.equals(subscriber, that.subscriber) && Objects.equals(youtubeChannel, that.youtubeChannel) && Objects.equals(lastFetchedAt, that.lastFetchedAt);
+		if (o == null) return false;
+		Class<?> oEffectiveClass = o instanceof HibernateProxy
+				? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass()
+				: o.getClass();
+		Class<?> thisEffectiveClass = this instanceof HibernateProxy
+				? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
+				: this.getClass();
+		if (thisEffectiveClass != oEffectiveClass) return false;
+		SubscribedChannelEntity entity = (SubscribedChannelEntity) o;
+		return getSubscribedChannelId() != null
+				&& Objects.equals(getSubscribedChannelId(), entity.getSubscribedChannelId());
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(subscribedChannelId, subscriber, youtubeChannel, setup, lastFetchedAt);
+	public final int hashCode() {
+		return Objects.hash(subscribedChannelId);
 	}
 
-	@Override
-	public String toString() {
-		return """
-				SubscribedChannelEntity{
-				        subscribedChannelId = "%s",
-				        subscriber = "%s",
-				        youtubeChannel = "%s",
-				        setup = "%s",
-				        lastFetchedAt = "%s"
-				}""".formatted(subscribedChannelId, subscriber, youtubeChannel, setup, lastFetchedAt);
-	}
-
+	@ToString
 	@Getter
 	@NoArgsConstructor
 	@Embeddable
 	public static class SubscribedChannelId implements Serializable {
 
-		private String youtubeChannelId; // youtube channel id
+		private String youtubeChannelId;
 		private long subscriberChannelId;
 
 		public SubscribedChannelId(YoutubeChannelEntity youtubeChannelEntity, SubscriberDiscordChannelEntity subscriberDiscordChannelEntity) {
@@ -103,23 +106,23 @@ public class SubscribedChannelEntity {
 		}
 
 		@Override
-		public String toString() {
-			return "SubscribedChannelId{" +
-					"youtubeChannelId='" + youtubeChannelId + '\'' +
-					", subscriberId='" + subscriberChannelId + '\'' +
-					'}';
-		}
-
-		@Override
-		public boolean equals(Object o) {
+		public final boolean equals(Object o) {
 			if (this == o) return true;
-			if (o == null || getClass() != o.getClass()) return false;
+			if (o == null) return false;
+			Class<?> oEffectiveClass = o instanceof HibernateProxy
+					? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass()
+					: o.getClass();
+			Class<?> thisEffectiveClass = this instanceof HibernateProxy
+					? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
+					: this.getClass();
+			if (thisEffectiveClass != oEffectiveClass) return false;
 			SubscribedChannelId that = (SubscribedChannelId) o;
-			return Objects.equals(youtubeChannelId, that.youtubeChannelId) && Objects.equals(subscriberChannelId, that.subscriberChannelId);
+			return Objects.equals(getYoutubeChannelId(), that.getYoutubeChannelId())
+					&& Objects.equals(getSubscriberChannelId(), that.getSubscriberChannelId());
 		}
 
 		@Override
-		public int hashCode() {
+		public final int hashCode() {
 			return Objects.hash(youtubeChannelId, subscriberChannelId);
 		}
 

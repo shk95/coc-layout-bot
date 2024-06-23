@@ -16,14 +16,8 @@ public record YoutubeChannel(
 	@Override
 	public String toString() {
 		return """
-
-				YoutubeChannel{
-				        channelId=%s,
-				        channelTitle=%s,
-				        fetchStartAt=%s,
-				        lastUpdateAt=%s,
-				        videoSplitStrategy=%s
-				}""".formatted(channelId, channelTitle, fetchStartAt, lastUpdateAt, videoSplitStrategy);
+				YoutubeChannel{ channelId = %s , channelTitle = %s , fetchStartAt = %s , lastUpdateAt = %s , videoSplitStrategy = %s }
+				""".formatted(channelId, channelTitle, fetchStartAt, lastUpdateAt, videoSplitStrategy);
 	}
 
 }

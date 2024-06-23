@@ -22,10 +22,8 @@ public record Layout(
 	@Override
 	public String toString() {
 		return """
-				Layout{
-				        youtubeVideo = "%s",
-				        detail = "%s"
-				}""".formatted(youtubeVideo, detail);
+				Layout{ youtubeVideo = %s , detail = %s }
+				""".formatted(youtubeVideo, detail);
 	}
 
 	@Override
@@ -52,12 +50,8 @@ public record Layout(
 		@Override
 		public String toString() {
 			return """
-					Detail{
-					        timestamp = "%s",
-					        layoutUrl = "%s",
-					        imgPart = "%s",
-					        layoutImgUrl = "%s"
-					}""".formatted(timestamp, layoutUrl, imgPart, layoutImgUrl);
+					Detail{ timestamp = %s , layoutUrl = %s , imgPart = %s , layoutImgUrl = %s }
+					""".formatted(timestamp, layoutUrl, imgPart, layoutImgUrl);
 		}
 
 		@Override

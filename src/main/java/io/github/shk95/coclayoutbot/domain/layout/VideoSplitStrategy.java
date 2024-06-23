@@ -36,9 +36,8 @@ public record VideoSplitStrategy(
 	@Override
 	public String toString() {
 		return """
-				VideoSplitStrategy{
-				        strategy = "%s"
-				}""".formatted(strategy);
+				VideoSplitStrategy{ strategy = %s }
+				""".formatted(strategy);
 	}
 
 	public enum Mode {

@@ -22,10 +22,8 @@ public record YoutubeVideo(
 	@Override
 	public String toString() {
 		return """
-				YoutubeVideo{
-				        youtubeVideoInfoPart = "%s",
-				        duration = "%s"
-				}""".formatted(youtubeVideoInfoPart, duration);
+				YoutubeVideo{ youtubeVideoInfoPart = %s , duration = %s }
+				""".formatted(youtubeVideoInfoPart, duration);
 	}
 
 	public Layout.Part processLayoutLink() {
@@ -56,11 +54,8 @@ public record YoutubeVideo(
 		@Override
 		public String toString() {
 			return """
-					Part{
-					        youtubeChannel = "%s",
-					        videoId = "%s",
-					        publishedAt = "%s"
-					}""".formatted(youtubeChannel, videoId, publishedAt);
+					Part{ youtubeChannel = %s , videoId = %s , title = %s , publishedAt = %s }
+					""".formatted(youtubeChannel, videoId, title.strip().substring(0, 10).concat("..."), publishedAt);
 		}
 
 		@Override

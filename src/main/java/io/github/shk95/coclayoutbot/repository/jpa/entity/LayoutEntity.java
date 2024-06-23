@@ -7,11 +7,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.proxy.HibernateProxy;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
 import java.time.LocalTime;
 import java.util.Comparator;
+import java.util.Objects;
 
 @ToString(onlyExplicitlyIncluded = true)
 @Getter
@@ -37,8 +39,10 @@ public class LayoutEntity implements Comparable<LayoutEntity> {
 	private int imgPart;
 	@Column(name = "layout_img_url")
 	private String layoutImgUrl;
+	@ToString.Include
 	@Column(name = "error_count", columnDefinition = "NUMBER(1) DEFAULT 0")
 	private int errorCount;
+	@ToString.Include
 	@ManyToOne
 	@JoinColumn(name = "video_id", referencedColumnName = "video_id")
 	private YoutubeVideoEntity youtubeVideoEntity;
@@ -96,6 +100,28 @@ public class LayoutEntity implements Comparable<LayoutEntity> {
 		return Comparator.comparing(LayoutEntity::getPublishedAt)
 				.thenComparing(LayoutEntity::getImgPart)
 				.compare(this, o);
+	}
+
+	@Override
+	public final boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null) return false;
+		Class<?> oEffectiveClass = o instanceof HibernateProxy
+				? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass()
+				: o.getClass();
+		Class<?> thisEffectiveClass = this instanceof HibernateProxy
+				? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
+				: this.getClass();
+		if (thisEffectiveClass != oEffectiveClass) return false;
+		LayoutEntity that = (LayoutEntity) o;
+		return getIdSeq() != null && Objects.equals(getIdSeq(), that.getIdSeq());
+	}
+
+	@Override
+	public final int hashCode() {
+		return this instanceof HibernateProxy
+				? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode()
+				: getClass().hashCode();
 	}
 
 }
