@@ -13,7 +13,7 @@ public interface LayoutRepository extends JpaRepository<LayoutEntity, Long> {
 
 	List<LayoutEntity> findAllByErrorCountLessThanAndLayoutImgUrlIsNull(int errorCount);
 
-	List<LayoutEntity> findAllByYoutubeVideoEntity_YoutubeChannel_ChannelIdAndYoutubeVideoEntity_PublishedAtAfterAndErrorCountIs
+	List<LayoutEntity> findAllByYoutubeVideoEntity_YoutubeChannel_ChannelIdAndYoutubeVideoEntity_PublishedAtAfterAndErrorCountIsOrderByYoutubeVideoEntity_PublishedAtAscTimestampAscImgPartAsc
 			(String channelId, Instant after, int errorCount);
 
 }

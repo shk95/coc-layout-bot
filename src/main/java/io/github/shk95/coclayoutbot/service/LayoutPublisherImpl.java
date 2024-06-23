@@ -63,11 +63,10 @@ public class LayoutPublisherImpl implements LayoutPublisher {
 					}
 
 					List<Layout> layoutsAfterLastFetchedAt = layoutRepository
-							.findAllByYoutubeVideoEntity_YoutubeChannel_ChannelIdAndYoutubeVideoEntity_PublishedAtAfterAndErrorCountIs
+							.findAllByYoutubeVideoEntity_YoutubeChannel_ChannelIdAndYoutubeVideoEntity_PublishedAtAfterAndErrorCountIsOrderByYoutubeVideoEntity_PublishedAtAscTimestampAscImgPartAsc
 									(subscribedYoutubeChannelId, lastFetchedAt, 0)
 							.stream()
 							.map(LayoutEntity::toDomain)
-							.sorted()
 							.toList();
 
 					List<MessageContent.EmbedContent> embedContents = layoutsAfterLastFetchedAt
