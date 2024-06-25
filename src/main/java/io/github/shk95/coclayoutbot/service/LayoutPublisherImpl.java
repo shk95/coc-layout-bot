@@ -36,7 +36,6 @@ public class LayoutPublisherImpl implements LayoutPublisher {
 		String timestamp = layout.detail().timestamp().toString();
 		int part = layout.detail().imgPart();
 
-		// TODO: Implement a better way to publish the layout
 		return """
 				Channel Title : %s
 				Published Date : %s
