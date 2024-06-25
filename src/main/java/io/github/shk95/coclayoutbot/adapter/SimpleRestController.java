@@ -41,9 +41,9 @@ public class SimpleRestController {
 				page,
 				pageSize,
 				Sort.by(
-						Sort.Order.asc("youtubeVideoEntity.publishedAt"),
-						Sort.Order.asc("timestamp"),
-						Sort.Order.asc("imgPart")
+						Sort.Order.desc("youtubeVideoEntity.publishedAt"),
+						Sort.Order.desc("timestamp"),
+						Sort.Order.desc("imgPart")
 				));
 		Page<LayoutEntity> layoutPages = layoutRepository.findAll(pageRequest);
 		int totalPages = layoutPages.getTotalPages();
