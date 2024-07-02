@@ -2,18 +2,34 @@ package io.github.shk95.coclayoutbot.domain.user.message;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.util.Comparator;
 
-public interface MessageContent {
+@Getter
+public abstract class MessageContent implements Comparable<MessageContent> {
+
+	protected final int order;
+
+	protected MessageContent(int order) {
+		this.order = order;
+	}
+
+	@Override
+	public int compareTo(@NotNull MessageContent o) {
+		return Comparator.comparingInt(MessageContent::getOrder)
+				.compare(this, o);
+	}
 
 	@Getter
-	class TextContent implements MessageContent {
+	public static class TextContent extends MessageContent {
 
 		private final String textContent;
 
 		@Builder
-		protected TextContent(String textContent) {
+		protected TextContent(int order, String textContent) {
+			super(order);
 			this.textContent = textContent;
 		}
 
@@ -27,7 +43,7 @@ public interface MessageContent {
 	}
 
 	@Getter
-	class EmbedContent implements MessageContent {
+	public static class EmbedContent extends MessageContent {
 
 		// main content
 		private final String title;
@@ -45,7 +61,8 @@ public interface MessageContent {
 		private final String authorIconUrl;
 
 		@Builder
-		protected EmbedContent(String title,
+		protected EmbedContent(int order,
+		                       String title,
 		                       String description,
 		                       String url,
 		                       String imageUrl,
@@ -56,6 +73,7 @@ public interface MessageContent {
 		                       String authorUrl,
 		                       String authorIconUrl
 		) {
+			super(order);
 			this.title = title;
 			this.description = description;
 			this.url = url;
