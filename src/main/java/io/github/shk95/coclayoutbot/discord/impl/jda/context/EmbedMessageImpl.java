@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import org.apache.commons.collections4.ListUtils;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -53,19 +54,29 @@ public class EmbedMessageImpl implements EmbedMessage {
 		long channelId = messageCreation.getChannelId();
 		List<List<MessageEmbed>> messageEmbeds = partitioned(messageCreation.getContents());
 
-		Consumer<TextChannel> send = channel ->
-				messageEmbeds.forEach(
-						embeds ->
-								channel
-										.sendMessageEmbeds(embeds)
-										.queue(
-												success ->
-														log.info("Message sent. Discord Channel Id : [{}]", channelId)
-												,
-												failure ->
-														log.error("Error occurred while sending message : [{}]",
-																failure.getMessage(), failure)
-										)
+		BiConsumer<TextChannel, List<MessageEmbed>> queue = (channel, embeds) ->
+				channel
+						.sendMessageEmbeds(embeds)
+						.queue(
+								success ->
+										log.info("Message sent. Discord Channel Id : [{}]", channel.getIdLong())
+								,
+								failure ->
+										log.error("Error occurred while sending message : [{}]",
+												failure.getMessage(), failure)
+						);
+
+		Consumer<TextChannel> send =
+				channel ->
+						messageEmbeds.forEach(
+								embeds -> {
+									if (embeds.size() > 10) {
+										ListUtils.partition(embeds, 10)
+												.forEach(partition -> queue.accept(channel, partition));
+									} else {
+										queue.accept(channel, embeds);
+									}
+								}
 				);
 
 		assert this.action != null;
