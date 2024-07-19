@@ -2,10 +2,7 @@ package io.github.shk95.coclayoutbot.repository.jpa.entity;
 
 import io.github.shk95.coclayoutbot.domain.layout.YoutubeVideo;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.Instant;
@@ -23,9 +20,9 @@ public class YoutubeVideoEntity {
 	@Column(name = "video_id")
 	private String videoId;
 	@ToString.Include
-	@Convert(converter = BooleanConverter.class)
+	@Convert(converter = ProcessedConverter.class)
 	@Column(name = "processed", columnDefinition = "NUMBER(1) DEFAULT 0", nullable = false, length = 1)
-	private boolean processed;
+	private Processed processed;
 	@Column(name = "title")
 	private String title;
 	@ToString.Include
@@ -39,7 +36,7 @@ public class YoutubeVideoEntity {
 	@Builder
 	public YoutubeVideoEntity(
 			String videoId,
-			boolean processed,
+			Processed processed,
 			String title,
 			Instant publishedAt,
 			YoutubeChannelEntity youtubeChannel
@@ -56,7 +53,11 @@ public class YoutubeVideoEntity {
 	}
 
 	public void processed() {
-		this.processed = true;
+		this.processed = Processed.PROCESSED;
+	}
+
+	public void noneProcessed() {
+		this.processed = Processed.NONE;
 	}
 
 	@Override
@@ -79,6 +80,16 @@ public class YoutubeVideoEntity {
 		return this instanceof HibernateProxy
 				? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode()
 				: getClass().hashCode();
+	}
+
+	@Getter
+	@RequiredArgsConstructor
+	public enum Processed {
+		NONE(-1),
+		NOT_PROCESSED(0),
+		PROCESSED(1);
+
+		private final int value;
 	}
 
 }
