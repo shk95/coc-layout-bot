@@ -52,9 +52,9 @@ public class YoutubeChannelEntity {
 	@Column(name = "offset_fixed", columnDefinition = "VARCHAR(8)")
 	private LocalTime offsetFixed;
 	@Max(9)
-	@Min(2)
+	@Min(1)
 	@Column(name = "frame_radius_count",
-			columnDefinition = "NUMBER(1) DEFAULT 3 CHECK (frame_radius_count BETWEEN 2 AND 9)", nullable = false)
+			columnDefinition = "NUMBER(1) DEFAULT 3 CHECK (frame_radius_count BETWEEN 1 AND 9)", nullable = false)
 	private int frameRadiusCount;
 
 	public YoutubeChannel toDomain() {

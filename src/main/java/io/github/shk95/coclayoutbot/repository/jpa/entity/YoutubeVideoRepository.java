@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface YoutubeVideoRepository extends JpaRepository<YoutubeVideoEntity, String> {
 
-	List<YoutubeVideoEntity> findAllByProcessedFalse();
+	List<YoutubeVideoEntity> findAllByProcessedIs(YoutubeVideoEntity.Processed processed);
 
 }

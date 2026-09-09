@@ -50,7 +50,7 @@ public class LayoutCollectorService implements LayoutCollector {
 											.videoId(part.videoId())
 											.title(part.title())
 											.publishedAt(part.publishedAt())
-											.processed(false).build()
+											.processed(YoutubeVideoEntity.Processed.NOT_PROCESSED).build()
 							)
 							.toList();
 					youtubeChannelEntity.touchLastUpdateAt(now);
@@ -70,7 +70,8 @@ public class LayoutCollectorService implements LayoutCollector {
 	@Transactional
 	@Override
 	public ChainableRunnable collectLayoutLink() {
-		List<YoutubeVideoEntity> youtubeVideoEntities = youtubeVideoRepository.findAllByProcessedFalse();
+		List<YoutubeVideoEntity> youtubeVideoEntities = youtubeVideoRepository
+				.findAllByProcessedIs(YoutubeVideoEntity.Processed.NOT_PROCESSED);
 		List<LayoutEntity> processedLayouts = youtubeVideoEntities
 				.parallelStream()
 				.map(youtubeVideoEntity -> {
@@ -85,7 +86,10 @@ public class LayoutCollectorService implements LayoutCollector {
 					int frameRadiusCount = youtubeVideoEntity.getYoutubeChannel().getFrameRadiusCount();
 					Layout.Part layoutPart = youtubeVideo.processLayoutLink(); // 레이아웃 링크를 추출하여 추가.
 					List<Layout.Detail> layoutDetail = layoutPart.processTimestamp(frameRadiusCount); // 레이아웃 링크별 타임스탬프를 추출하여 추가.
-					if (layoutDetail.isEmpty()) return null; // 해당 영상에서 유효한 데이터가 없음.
+					if (layoutDetail.isEmpty()) {
+						youtubeVideoEntity.noneProcessed();
+						return null; // 해당 영상에서 유효한 데이터가 없음.
+					}
 
 					List<LayoutEntity> layoutEntities =
 							layoutDetail.stream()

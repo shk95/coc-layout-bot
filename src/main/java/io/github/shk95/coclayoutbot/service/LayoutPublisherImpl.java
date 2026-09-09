@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -68,14 +69,18 @@ public class LayoutPublisherImpl implements LayoutPublisher {
 							.map(LayoutEntity::toDomain)
 							.toList();
 
-					List<MessageContent.EmbedContent> embedContents = layoutsAfterLastFetchedAt
-							.stream()
-							.map(layout -> MessageContent.EmbedContent.builder()
-									.title("Click here to see the layout!")
-									.description(createMessage(layout))
-									.imageUrl(layout.detail().layoutImgUrl())
-									.url(layout.detail().layoutUrl())
-									.build())
+					List<MessageContent.EmbedContent> embedContents = IntStream.range(0, layoutsAfterLastFetchedAt.size())
+							.mapToObj(i -> {
+										Layout layout = layoutsAfterLastFetchedAt.get(i);
+										return MessageContent.EmbedContent.builder()
+												.order(i)
+												.title("Click here to see the layout!")
+												.description(createMessage(layout))
+												.imageUrl(layout.detail().layoutImgUrl())
+												.url(layout.detail().layoutUrl())
+												.build();
+									}
+							)
 							.toList();
 					MessageCreation<MessageContent.EmbedContent> messageCreation = new MessageCreation<>(subscriber.channelId(), embedContents);
 

@@ -116,7 +116,7 @@ public record Layout(
 					LocalTime offsetFixed = this.youtubeVideo.youtubeVideoInfoPart().youtubeChannel()
 							.videoSplitStrategy().offsetFixed();
 					IntStream.range(0, count).forEachOrdered(i -> {
-						LocalTime timestamp = LocalTime.ofSecondOfDay((long) offsetFixed.toSecondOfDay() * i);
+						LocalTime timestamp = LocalTime.ofSecondOfDay((long) offsetFixed.toSecondOfDay() * (i + 1));
 						layoutPreProcessed.add(new Detail(checkTimestamp(timestamp), layoutUrls.get(i), 0, null));
 					});
 					yield (long) offsetFixed.toSecondOfDay();

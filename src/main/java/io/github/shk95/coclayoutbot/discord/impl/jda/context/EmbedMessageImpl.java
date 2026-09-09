@@ -8,8 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import org.apache.commons.collections4.ListUtils;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -21,15 +23,22 @@ public class EmbedMessageImpl implements EmbedMessage {
 
 	private final BiConsumer<Long, Consumer<TextChannel>> action;
 
+	// Embed 메시지는 최대 10개씩만 보낼수 있음을 주의.
 	private static List<List<MessageEmbed>> partitioned(Collection<MessageContent.EmbedContent> contents) {
 		return contents.stream()
 				.collect(Collectors.groupingBy(MessageContent.EmbedContent::getUrl))
 				.values()
 				.stream()
+				.sorted(Comparator.comparing(l -> l.get(0)))
+				.map(list -> list.stream()
+						.sorted(MessageContent::compareTo)
+						.toList()
+				)
 				.map(list -> list.stream()
 						.map(EmbedMessageImpl::createMessageEmbed)
-						.collect(Collectors.toList()))
-				.collect(Collectors.toList());
+						.toList()
+				)
+				.toList();
 	}
 
 	private static MessageEmbed createMessageEmbed(MessageContent.EmbedContent content) {
@@ -45,19 +54,29 @@ public class EmbedMessageImpl implements EmbedMessage {
 		long channelId = messageCreation.getChannelId();
 		List<List<MessageEmbed>> messageEmbeds = partitioned(messageCreation.getContents());
 
-		Consumer<TextChannel> send = channel ->
-				messageEmbeds.forEach(
-						embeds ->
-								channel
-										.sendMessageEmbeds(embeds)
-										.queue(
-												success ->
-														log.info("Message sent. Discord Channel Id : [{}]", channelId)
-												,
-												failure ->
-														log.error("Error occurred while sending message : [{}]",
-																failure.getMessage(), failure)
-										)
+		BiConsumer<TextChannel, List<MessageEmbed>> queue = (channel, embeds) ->
+				channel
+						.sendMessageEmbeds(embeds)
+						.queue(
+								success ->
+										log.info("Message sent. Discord Channel Id : [{}]", channel.getIdLong())
+								,
+								failure ->
+										log.error("Error occurred while sending message : [{}]",
+												failure.getMessage(), failure)
+						);
+
+		Consumer<TextChannel> send =
+				channel ->
+						messageEmbeds.forEach(
+								embeds -> {
+									if (embeds.size() > 10) {
+										ListUtils.partition(embeds, 10)
+												.forEach(partition -> queue.accept(channel, partition));
+									} else {
+										queue.accept(channel, embeds);
+									}
+								}
 				);
 
 		assert this.action != null;
